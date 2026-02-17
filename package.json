@@ -1,0 +1,38 @@
+{
+  "name": "@alphasquad/create-saleor-storefront",
+  "version": "0.1.1",
+  "description": "CLI to scaffold Saleor storefront tenant wrappers from AlphaSquad core templates",
+  "type": "module",
+  "bin": {
+    "create-saleor-storefront": "src/cli.mjs"
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "typecheck": "node --check src/cli.mjs"
+  },
+  "keywords": [
+    "saleor",
+    "nextjs",
+    "storefront",
+    "cli",
+    "scaffold"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlphaSquadTech/create-saleor-storefront.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlphaSquadTech/create-saleor-storefront/issues"
+  },
+  "homepage": "https://github.com/AlphaSquadTech/create-saleor-storefront#readme",
+  "engines": {
+    "node": ">=20"
+  }
+}
