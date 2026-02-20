@@ -700,6 +700,11 @@ function generateTenantPackageJson({ tenantSlug, template, packageManager }) {
     },
     dependencies: {
       [template.npmPackage]: "latest"
+    },
+    devDependencies: {
+      "@tailwindcss/postcss": "^4",
+      tailwindcss: "^4",
+      typescript: "^5"
     }
   };
 }
