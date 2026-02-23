@@ -1,6 +1,6 @@
 {
   "name": "@alphasquad/create-saleor-storefront",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI to scaffold Saleor storefront tenant wrappers from AlphaSquad core templates",
   "type": "module",
   "bin": {
