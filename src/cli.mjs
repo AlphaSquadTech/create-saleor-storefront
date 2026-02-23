@@ -765,7 +765,11 @@ const nextBin = require.resolve("next/dist/bin/next", { paths: [process.cwd(), t
 
 const child = spawn(process.execPath, [nextBin, command, templateDir, ...extraArgs], {
   stdio: "inherit",
-  env: process.env
+  env: {
+    ...process.env,
+    NEXT_TENANT_ROOT: process.cwd()
+  },
+  cwd: templateDir
 });
 
 child.on("exit", (code, signal) => {
@@ -837,6 +841,19 @@ try {
   process.exit(0);
 }
 `;
+}
+
+function generateTsconfig(templatePackage) {
+  return {
+    extends: `${templatePackage}/tsconfig.json`,
+    compilerOptions: {
+      paths: {
+        "@/*": ["./src/*"],
+        [`${templatePackage}/*`]: ["./node_modules/${templatePackage}/*"]
+      }
+    },
+    include: ["src/**/*", ".next/types/**/*.ts"]
+  };
 }
 
 function packageManagerInstallCommand(packageManager) {
@@ -1225,6 +1242,7 @@ async function main() {
     const envOutput = formatEnvFile(entries, envValues);
     const storefrontConfig = generateStorefrontConfig({ template, tenantSlug, envValues });
     const overrides = generateOverrideFiles();
+    const tsconfig = generateTsconfig(template.npmPackage);
 
     await writeFileSafe(path.join(targetDir, "package.json"), `${JSON.stringify(tenantPackageJson, null, 2)}\n`);
     await writeFileSafe(path.join(targetDir, ".gitignore"), generateGitignore());
@@ -1232,8 +1250,9 @@ async function main() {
     await writeFileSafe(path.join(targetDir, ".env.local"), envOutput);
     await writeFileSafe(path.join(targetDir, "README.md"), generateTenantReadme({ tenantSlug, template }));
     await writeFileSafe(path.join(targetDir, "storefront.config.json"), `${JSON.stringify(storefrontConfig, null, 2)}\n`);
-    await writeFileSafe(path.join(targetDir, "src/overrides/HomePage.tsx"), overrides.homePage);
-    await writeFileSafe(path.join(targetDir, "src/overrides/index.ts"), overrides.registry);
+    await writeFileSafe(path.join(targetDir, "tsconfig.json"), `${JSON.stringify(tsconfig, null, 2)}\n`);
+    await writeFileSafe(path.join(targetDir, "src/tenant-overrides/HomePage.tsx"), overrides.homePage);
+    await writeFileSafe(path.join(targetDir, "src/tenant-overrides/index.ts"), overrides.registry);
     await writeFileSafe(path.join(targetDir, "scripts/template-runner.mjs"), generateTemplateRunner(template.npmPackage));
     await writeFileSafe(path.join(targetDir, "scripts/update-template.mjs"), generateTemplateUpdateScript(template.npmPackage));
     await writeFileSafe(path.join(targetDir, "scripts/check-template-update.mjs"), generateTemplateCheckScript(template.npmPackage));
