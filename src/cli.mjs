@@ -691,7 +691,7 @@ function generateTenantPackageJson({ tenantSlug, template, packageManager }) {
     version: "0.1.0",
     private: true,
     scripts: {
-      dev: "node ./scripts/template-runner.mjs dev",
+      dev: "node ./scripts/template-runner.mjs dev --turbopack",
       build: "node ./scripts/template-runner.mjs build",
       start: "node ./scripts/template-runner.mjs start",
       lint: "node ./scripts/template-runner.mjs lint",
